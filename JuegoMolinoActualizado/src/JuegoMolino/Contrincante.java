@@ -91,8 +91,8 @@ public class Contrincante extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public int getCall(int i){
-        return i;
+    public boolean getCallContrincante(){
+        return true;
     }
 
     public static void main(String args[]) {

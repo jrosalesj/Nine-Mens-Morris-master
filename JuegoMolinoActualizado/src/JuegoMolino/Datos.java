@@ -129,9 +129,9 @@ public class Datos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    public boolean getCallDatos(){
+        return true;
+    }
     public static void main(String args[]) {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
