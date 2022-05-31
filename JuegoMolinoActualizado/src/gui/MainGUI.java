@@ -31,14 +31,14 @@ public class MainGUI extends JFrame {
     private JButton startGameButton;
     private JLabel turnsStatus;
     private JLabel modeStatus;
-    private final String[] messageStrings = {"Jugador","Computador"};
+    private final String[] messageStrings = {"Jugador"};
 
     JComboBox cmbMessageList = new JComboBox(messageStrings);
     
     @SuppressWarnings("serial")
 	public MainGUI() {
         super("Nine Men's Morris");
-        
+        this.setExtendedState(MAXIMIZED_BOTH);
         boardPanel = new BoardGUI();
         add(boardPanel, BorderLayout.CENTER);
         
@@ -115,9 +115,7 @@ public class MainGUI extends JFrame {
         			JComboBox cb = (JComboBox) e.getSource();
         			String msg = (String) cb.getSelectedItem();
         			switch (msg) {
-        			//es una opcion para que el compútador juegue con el usuario
-        			//case "Computador": boardPanel.isAIMode = 1;
-        			//break;
+        			
         			case "Jugador": boardPanel.isAIMode = 0;
         			break;
         			default: boardPanel.isAIMode = 0;
