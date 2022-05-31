@@ -1,19 +1,19 @@
-package board;
+package test;
 
+import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
 import board.Board;
 import board.Player;
 
 public class BoardTest {
-    final int MEN = 9;   /*cambio MEN por Ficha*/
+    final int MEN = 9;
 	
-	// TestPrimeraAsignacion después de la primera colocación
-        //placeMark
+	// Test assignment of marker after the first placement
 	@Test
-	public void testPrimeraAsignacion(){
+	public void testMarkerAssignment(){
         Board testboard = new Board();
         
         Player p1 = new Player('1','W', MEN);
@@ -25,9 +25,9 @@ public class BoardTest {
 	}
 	
 	
-	// Test método para verificar la ubicación válida
+	// Test method to check valid placement 
 	@Test
-	public void testColocacionValida() {
+	public void testValidPlacement() {
 		Board testBoard = new Board();
 		testBoard.printBoard();
 		
@@ -37,10 +37,17 @@ public class BoardTest {
 		assertTrue(testBoard.getCell(position).isOccupied());
 	}
 	
+	// Test method to check placement in invalid cells
+	@Test
+	public void testInValidPlacement() {
+		Board testBoard = new Board();
+		
+		Player p1 = new Player('1', 'W', MEN);
+		String position = "c10";
+		assertThat(testBoard.placeMark(p1, position), CoreMatchers.is("FAILED"));
+	}
 	
-	//clearMillFormation
-	// Test método para comprobar la propiedad de los marcadores
-        //Marcando de izquierda a derecha si se formó MILL en la fila o de arriba a abajo si se formo la columna
+	// Test method to check the ownership of markers
 	@Test
 	public void testOwnership(){
         Board testboard = new Board();
@@ -55,10 +62,9 @@ public class BoardTest {
 
 	}
 	
-	/// Test método para verificar si se forma un molino a través de una fila
-        //clearMillFormation
+	// Test method to check if a mill is formed across a row
 	@Test
-	public void testFilaMillFormation() {
+	public void testHorizontalMillFormation() {
 		Board testBoard = new Board();
 		
 		Player p1 = new Player('1', 'W', MEN);
@@ -66,12 +72,12 @@ public class BoardTest {
 		testBoard.placeMark(p1, "a1");
 		testBoard.placeMark(p1, "d1");
 		
-		assertEquals("a1-d1-g1", testBoard.placeMark(p1, "g1"));
+		assertEquals("a1,d1,g1", testBoard.placeMark(p1, "g1"));
 	}
 	
-	// Test método para comprobar si se forma un molino bajo una columna
+	// Test method to check if a mill is formed under a column
 	@Test
-	public void testColumnaMillFormation() {
+	public void testVerticalMillFormation() {
 		Board testBoard = new Board();
 		testBoard.printBoard();
 		
@@ -80,13 +86,12 @@ public class BoardTest {
 		testBoard.placeMark(p1, "a1");
 		testBoard.placeMark(p1, "a4");
 		
-		assertEquals("a1|a4|a7", testBoard.placeMark(p1, "a7"));
+		assertEquals("a1,a4,a7", testBoard.placeMark(p1, "a7"));
 	}
 	
 
-	//TestprintBoard pinta las posiciones del tablero con W
 	@Test
-	public void testprintBoard() {
+	public void testAllCells() {
 	    String colLabels = "abcdefg";
 	    String rowLabels = "1234567";
 	    String pos;
@@ -96,7 +101,7 @@ public class BoardTest {
 		testboard = new Board();
 		testboard.printBoard();
         
-        Player p1 = new Player('1','O', MEN);
+        Player p1 = new Player('1','W', MEN);
         
         
 	    for(int i=0;i<colLabels.length();i++){
@@ -117,4 +122,3 @@ public class BoardTest {
         testboard.printBoard();  
 	}
 }
-

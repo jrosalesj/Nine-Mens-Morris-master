@@ -1,5 +1,8 @@
 package ventana;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 public class Configuracion extends javax.swing.JFrame {
 
     public Configuracion() {
@@ -8,10 +11,10 @@ public class Configuracion extends javax.swing.JFrame {
     }
     
     //Cambiando el icono del programa 
-    /*public Image getIconImage(){
+    public Image getIconImage(){
         Image img = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/logoNMM.png"));
         return img;
-    }*/
+    }
     
     
     @SuppressWarnings("unchecked")
