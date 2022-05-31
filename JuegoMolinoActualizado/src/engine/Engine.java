@@ -73,7 +73,7 @@ public class Engine {
                 setNextPlayer();
                 
             } else if ( result.contains("-") || result.contains("|")) {
-                // PLACING // COLOCAR fue exitoso y result� en un Molino para activePlayer
+                // COLOCAR fue exitoso y result� en un Molino para activePlayer
                 //      <>-<>-<> ->Se form� Row Mill
                 //      <>|<>|<> ->Se form� el Molino de Columnas
                 
@@ -109,7 +109,7 @@ public class Engine {
         if (removableCells.contains(dstCellAddr)) {
             cBoard.removeMark(activePlayer.opponent, dstCellAddr);
             activePlayer.opponent.clearRemovableCells();
-            //cBoard.setOwnedCellsGroup(activePlayer);
+            
             
             printGameInfo("REMOVE:: " + msg);
             activePlayer.setNextPlayState();

@@ -22,7 +22,7 @@ public class EngineAI {
 		String[] dstString = engine.cBoard.getVacantCells().split(", ");
 		Random rand = new Random();
 		int n = rand.nextInt(dstString.length);
-		//engine.place(dstString[n]);
+		
 		return dstString[n];
 	}
 	
@@ -55,8 +55,7 @@ public class EngineAI {
 							movString[0] = srcString[j];
 							movString[1] = temCell.left.label;
 							return  movString;
-							//engine.move(srcString[j],temCell.left.label);
-							//break moveLoop;
+							
 							}
 					}
 					case 1:
@@ -66,7 +65,7 @@ public class EngineAI {
 							movString[1] = temCell.right.label;
 							return  movString;
 						
-							//break moveLoop;
+							
 							}
 					}
 					case 2:
@@ -75,8 +74,7 @@ public class EngineAI {
 							movString[0] = srcString[j];
 							movString[1] = temCell.top.label;
 							return  movString;
-							//engine.move(srcString[j],temCell.top.label);
-							//break moveLoop;
+							
 							}
 					}
 					case 3:
@@ -114,7 +112,7 @@ public class EngineAI {
 			}
 			
 			if (count == 2 && dstCell != null) {
-				//System.out.println(dstCell + "*****1*****");
+				
 				return dstCell;
 			}
 		}
@@ -126,21 +124,21 @@ public class EngineAI {
 			for(String cell : mills) {
 				if (oppString.contains(cell)) {
 					count = count + 1;
-					//System.out.println(count);
+					
 				} else if (!ownString.contains(cell)){
-					//System.out.println(cell);
+					
 					dstCell = cell;
 				}
 			}
 			
 			if (count == 2 && dstCell !=null) {
-				//System.out.println(dstCell + "*****2*****");
+				
 				return dstCell;
 			}
 		}
 		
 		dstCell = placeRandom();
-		//System.out.println(dstCell + "*****3*****");
+		
 		return dstCell;	
 	}
 	
@@ -160,7 +158,7 @@ public class EngineAI {
 				if (oppString.contains(cell) && rmString.contains(rmCell)) {
 					count = count + 1;
 					rmCell = cell;
-					//System.out.println(count);
+					
 				} else if (!ownString.contains(cell)){
 					empty++;
 				}
@@ -171,7 +169,7 @@ public class EngineAI {
 				
 			}
 		}
-		//rmCell = removeRandom();
+		
 		return rmCell;
 	}
 	
