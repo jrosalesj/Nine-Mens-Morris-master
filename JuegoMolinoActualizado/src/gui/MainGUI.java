@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 
 
 import engine.Engine;
+import javax.swing.JTextField;
 
 public class MainGUI extends JFrame {
     private static final long serialVersionUID = -8557749141800673771L;
@@ -31,14 +32,15 @@ public class MainGUI extends JFrame {
     private JButton startGameButton;
     private JLabel turnsStatus;
     private JLabel modeStatus;
-    private final String[] messageStrings = {"Jugador"};
+    
+    private final String[] messageStrings = {"Jugador","Computer"};
 
     JComboBox cmbMessageList = new JComboBox(messageStrings);
     
     @SuppressWarnings("serial")
 	public MainGUI() {
         super("Nine Men's Morris");
-        this.setExtendedState(MAXIMIZED_BOTH);
+	
         boardPanel = new BoardGUI();
         add(boardPanel, BorderLayout.CENTER);
         
@@ -50,29 +52,29 @@ public class MainGUI extends JFrame {
         		switch (boardPanel.gameEngine.activePlayer.getCurrentPlayState()) {
         		case GAMEOVER: 
         			if (boardPanel.gameEngine.p2.hasLost()) {
-        				modeStatus.setForeground(Color.GREEN);
+        				modeStatus.setForeground(Color.RED);
         				modeStatus.setText("Juego Terminado - El blanco gana!!!");
         				turnsStatus.setText("");
         			} else {
-        				modeStatus.setForeground(Color.BLUE);
+        				modeStatus.setForeground(Color.RED);
         				modeStatus.setText("Juego terminado - El negro gana!!!");
         				turnsStatus.setText("");
         			} 
         			break;
         		case FLYING: 
-        			modeStatus.setForeground(Color.GREEN);
+        			modeStatus.setForeground(Color.RED);
         			modeStatus.setText("Volando!!!!!");
         			break;
         		case MOVING:
-        			modeStatus.setForeground(Color.RED);
+        			modeStatus.setForeground(Color.BLACK);
         			modeStatus.setText("Modo: Movimiento");
         			break;
         		case REMOVING:
-        			modeStatus.setForeground(Color.BLACK);
+        			modeStatus.setForeground(Color.BLUE);
         			modeStatus.setText("Molino formado! Eliminar ficha");
         			break;
         		case PLACING:
-        			modeStatus.setForeground(Color.BLUE);
+        			modeStatus.setForeground(Color.BLACK);
         			modeStatus.setText("Modo: Colocacion");
         			break;
         		case NOTSTARTED:
@@ -95,8 +97,8 @@ public class MainGUI extends JFrame {
         
         
         startGameButton = new JButton("Juego Nuevo");
-        startGameButton.setPreferredSize(new Dimension(250,40));
-        startGameButton.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 25));
+        startGameButton.setPreferredSize(new Dimension(175,25));
+        startGameButton.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 20));
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -104,8 +106,8 @@ public class MainGUI extends JFrame {
                 boardPanel.setEngine(new Engine());
             }
         });
-        cmbMessageList.setPreferredSize(new Dimension(190, 30));
-        cmbMessageList.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 25));
+        cmbMessageList.setPreferredSize(new Dimension(150, 30));
+        cmbMessageList.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 20));
         cmbMessageList.addActionListener(new ActionListener() {
         	
 
@@ -115,7 +117,8 @@ public class MainGUI extends JFrame {
         			JComboBox cb = (JComboBox) e.getSource();
         			String msg = (String) cb.getSelectedItem();
         			switch (msg) {
-        			
+        			case "Computer": boardPanel.isAIMode = 1;
+        			break;
         			case "Jugador": boardPanel.isAIMode = 0;
         			break;
         			default: boardPanel.isAIMode = 0;
@@ -123,11 +126,12 @@ public class MainGUI extends JFrame {
         		}
         	}
         });
-
+        
+        
         turnsStatus = new JLabel("");
         modeStatus = new JLabel("");
-		turnsStatus.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 30));
-		modeStatus.setFont(new Font(modeStatus.getFont().getName(), Font.PLAIN, 30));
+		turnsStatus.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 20));
+		modeStatus.setFont(new Font(modeStatus.getFont().getName(), Font.PLAIN, 20));
 		turnsStatus.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		modeStatus.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
@@ -138,13 +142,13 @@ public class MainGUI extends JFrame {
         add(bottomBar, BorderLayout.SOUTH);
     }
     
-
+/*
     public static void main(String[] args) {
         JFrame game = new MainGUI();
-        game.setSize(1100, 700);
+        game.setSize(800, 700);
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setVisible(true);
         game.setLocationRelativeTo(null);
- 
-    }
+        game.setResizable(false);
+    }*/
 }

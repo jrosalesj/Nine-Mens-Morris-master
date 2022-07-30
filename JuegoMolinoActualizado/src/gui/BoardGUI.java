@@ -10,22 +10,33 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.JPanel;
 
+import javax.swing.JLabel;
+
 import engine.Engine;
 import engine.EngineAI;
+import ventana.UsuarioB;
+import ventana.UsuarioN;
+
 
 
 public class BoardGUI extends JPanel {
-	
-
-	private final int[] boardPoint = {9,0,1,2,14,23,22,21,9,10,3,4,1,4,5,13,14,13,20,19,22,19,18,10,11,6,7,4,7,8,12,13,12,17,16,19,16,15,11};
-	
-	
+	private static final long serialVersionUID = 2961261317989680041L;
+        public static  JLabel jLabelJugador1 ;
+	public static JLabel jLabelJugador2;
+        private String nombreBlanco;
+        private String nombreNegro;
+        private final int[] boardPoint = {9,0,1,2,14,23,22,21,9,10,3,4,1,4,5,13,14,13,20,19,22,19,18,10,11,6,7,4,7,8,12,13,12,17,16,19,16,15,11};
+	public void setNombreNegro(String nombre){
+            nombreNegro=nombre;
+        }
+	public void setNombreBlanco(String nombreB){
+            nombreBlanco=nombreB;
+        }
 	private String[] guiToBoardMap = {
             "a1", "d1", "g1",
             "b2", "d2", "f2",
             "c3", "d3", "e3",
-            "a4", "b4", "c4", 
-            "e4", "f4", "g4",
+            "a4", "b4", "c4", "e4", "f4", "g4",
             "c5", "d5", "e5",
             "b6", "d6", "f6",
             "a7", "d7", "g7"
@@ -37,8 +48,10 @@ public class BoardGUI extends JPanel {
 
 	public BoardGUI() {
 	    gameEngine = new Engine();
-		addMouseListener(new Controller());
-		
+            addMouseListener(new Controller());
+                 
+            this.jLabelJugador2=jLabelJugador2;
+            this.jLabelJugador1=jLabelJugador1;
 	}
 	
 	public void setEngine(Engine gameEngine){
@@ -85,6 +98,21 @@ public class BoardGUI extends JPanel {
 		Image img = new ImageIcon(getClass().getResource("cuzco.jpg")).getImage();
 		g.drawImage(img,0,0,null);
 		
+                this.setLayout(null);
+		jLabelJugador1 = new JLabel();
+                jLabelJugador1.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 25));
+                jLabelJugador1.setForeground(Color.WHITE);
+                jLabelJugador1.setText(UsuarioB.jugador1);
+                jLabelJugador1.setBounds(610, 60, 150, 25);
+                add(jLabelJugador1);
+
+                jLabelJugador2 = new JLabel();
+                jLabelJugador2.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 25));
+                jLabelJugador2.setForeground(Color.BLACK);
+                jLabelJugador2.setText(UsuarioN.jugador2);             
+                jLabelJugador2.setBounds(610, 320, 150, 25);
+                add(jLabelJugador2);
+                
 		// draw the board line
 		for (int i = 0; i < boardPoint.length-1; i++) {
 			    
@@ -112,7 +140,7 @@ public class BoardGUI extends JPanel {
     			        Stroke dashed = new BasicStroke(getSize().height/400, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
     			        g2d.setStroke(dashed);
     					//Graphics2D g2 = (Graphics2D) g;
-    					// describir las piezas
+    					// Draw pieces boundary
     					//g2d.setStroke(new BasicStroke(getSize().height/400));
     					g2d.setColor(Color.RED);
     					g2d.drawOval(coords.x - getSize().height/30, coords.y - getSize().height/30, getSize().height/15, getSize().height/15);
@@ -124,11 +152,11 @@ public class BoardGUI extends JPanel {
     					
     			        Graphics2D g2d = (Graphics2D) g.create();
 
-    			        // establecer el trazo de la copia, no el original
+    			        //set the stroke of the copy, not the original 
     			        Stroke dashed = new BasicStroke(getSize().height/400, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
     			        g2d.setStroke(dashed);
     					//Graphics2D g2 = (Graphics2D) g;
-    					//  Dibujar l�mite de piezas
+    					// Draw pieces boundary
     					//g2.setStroke(new BasicStroke(getSize().height/400));
     					g2d.setColor(Color.RED);
     					g2d.drawOval(coords.x - getSize().height/30, coords.y - getSize().height/30, getSize().height/15, getSize().height/15);
@@ -155,7 +183,7 @@ public class BoardGUI extends JPanel {
     					
     					g.fillOval(coords.x - getSize().height/30, coords.y - getSize().height/30, getSize().height/15, getSize().height/15);
     					Graphics2D g2 = (Graphics2D) g;
-    					//Describir piezas
+    					// Draw pieces boundary
     					g2.setStroke(new BasicStroke(getSize().height/400));
     					g2.setColor(Color.gray);
 
@@ -178,11 +206,11 @@ public class BoardGUI extends JPanel {
 			if (gameEngine.activePlayer.removePending() && gameEngine.activePlayer.opponent.getRemovableCells().contains(guiToBoardMap[i])) {
 				Point coords = getPositionCoords(i);
 		        Graphics2D g2d = (Graphics2D) g.create();
-		        //establecer el trazo de la copia, no el original
+		        //set the stroke of the copy, not the original 
 		        Stroke dashed = new BasicStroke(getSize().height/200, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 		        g2d.setStroke(dashed);
 				//Graphics2D g2 = (Graphics2D) g;
-				// 
+				// Draw pieces boundary
 				//g2d.setStroke(new BasicStroke(getSize().height/400));
 				g2d.setColor(Color.RED);
 				g2d.drawOval(coords.x - getSize().height/30, coords.y - getSize().height/30, getSize().height/15, getSize().height/15);
@@ -192,6 +220,7 @@ public class BoardGUI extends JPanel {
 			}	
 		
 		
+                
 		for(int i = gameEngine.p1.getPlaceCount(); i > 0; i--) {
 			Point coords = getPositionCoords(2);
 			g.setColor(Color.WHITE);
@@ -200,6 +229,8 @@ public class BoardGUI extends JPanel {
 			g.fillOval(x, y, getSize().height/15, getSize().height/15);
 		}
 		
+                
+                
 		for(int i = gameEngine.p2.getPlaceCount() ; i > 0; i--) {
 				Point coords = getPositionCoords(14);
 				g.setColor(Color.BLACK);
