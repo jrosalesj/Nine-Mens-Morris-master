@@ -1,13 +1,23 @@
 
 package ventana;
 
+import gui.BoardGUI;
+import gui.MainGUI;
+import javax.swing.JFrame;
+
 public class UsuarioB extends javax.swing.JFrame {
+    public static int optionGame;
+    public static String jugador1;
+  
+    private BoardGUI b;
 
     public UsuarioB() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-
+    public void setOptionGame(int option){
+        optionGame=option;
+    }
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -58,6 +68,11 @@ public class UsuarioB extends javax.swing.JFrame {
         getContentPane().add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, -1, -1));
 
         jTextFieldNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNombreActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 302, 200, 30));
 
         jButtonContinuar.setBackground(new java.awt.Color(255, 204, 102));
@@ -89,10 +104,43 @@ public class UsuarioB extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCloseActionPerformed
 
     private void jButtonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContinuarActionPerformed
-        UsuarioN usuario2 = new UsuarioN();
-        usuario2.setVisible(true);
-        this.setVisible(false);
+     
+       if(optionGame==0){
+            
+            UsuarioN usuario2 = new UsuarioN();
+            usuario2.setVisible(true);
+            this.setVisible(false);
+            b= new BoardGUI();
+            jugador1=jTextFieldNombre.getText();
+            System.out.println(jugador1);
+            b.setNombreBlanco(jugador1);
+        }else if(optionGame==1){
+            this.setVisible(false);
+           
+            JFrame usuario3 = new MainGUI();
+            usuario3.setVisible(true);
+            usuario3.setSize(800,700);
+            usuario3.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+            usuario3.setLocationRelativeTo(null);
+            usuario3.setResizable(false);
+            
+            b= new BoardGUI();
+            
+            jugador1=jTextFieldNombre.getText();
+            System.out.println(jugador1);
+            b.setNombreBlanco(jugador1);
+            
+        }else{
+            System.out.println("Error");
+        }
+              
+       
+        
     }//GEN-LAST:event_jButtonContinuarActionPerformed
+
+    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
+      /* jTextFieldNombre.get*/
+    }//GEN-LAST:event_jTextFieldNombreActionPerformed
 
     public static void main(String args[]) {
         

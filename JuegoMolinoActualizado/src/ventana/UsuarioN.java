@@ -1,10 +1,14 @@
 package ventana;
 
+import gui.BoardGUI;
+
 import gui.MainGUI;
-import gui.MainGUI;
+import javax.swing.JFrame;
 
 public class UsuarioN extends javax.swing.JFrame {
 
+    public static String jugador2="PC";
+    private BoardGUI n;
     public UsuarioN() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -19,7 +23,7 @@ public class UsuarioN extends javax.swing.JFrame {
         jLabelJugador = new javax.swing.JLabel();
         jLabelColor = new javax.swing.JLabel();
         jLabelNombre = new javax.swing.JLabel();
-        jTextFieldNombre = new javax.swing.JTextField();
+        jTextFieldNombre1 = new javax.swing.JTextField();
         jButtonContinuar = new javax.swing.JButton();
         jLabelColorFicha = new javax.swing.JLabel();
         jLabelFondo = new javax.swing.JLabel();
@@ -56,10 +60,17 @@ public class UsuarioN extends javax.swing.JFrame {
         jLabelNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelNombre.setForeground(new java.awt.Color(255, 255, 255));
         jLabelNombre.setText("Nombre : ");
+        jLabelNombre.setRequestFocusEnabled(false);
         getContentPane().add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, -1, -1));
+        jLabelNombre.getAccessibleContext().setAccessibleDescription("");
 
-        jTextFieldNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 302, 200, 30));
+        jTextFieldNombre1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldNombre1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNombre1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextFieldNombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 302, 200, 30));
 
         jButtonContinuar.setBackground(new java.awt.Color(255, 204, 102));
         jButtonContinuar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -90,11 +101,24 @@ public class UsuarioN extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCloseActionPerformed
 
     private void jButtonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContinuarActionPerformed
-        MainGUI usuario2 = new MainGUI();
+       
+      n= new BoardGUI();      
+      jugador2=jTextFieldNombre1.getText();
+      System.out.println(jugador2);
+      n.setNombreNegro(jugador2);
+     
+        this.setVisible(false);  
+        JFrame usuario2 = new MainGUI();
         usuario2.setVisible(true);
-        this.setVisible(false);
-        this.setLocationRelativeTo(null);
+        usuario2.setSize(800,700);
+        usuario2.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        usuario2.setLocationRelativeTo(null);
+        usuario2.setResizable(false);
     }//GEN-LAST:event_jButtonContinuarActionPerformed
+
+    private void jTextFieldNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombre1ActionPerformed
+     
+    }//GEN-LAST:event_jTextFieldNombre1ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -132,6 +156,6 @@ public class UsuarioN extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelJugador;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelTitulo;
-    private javax.swing.JTextField jTextFieldNombre;
+    private javax.swing.JTextField jTextFieldNombre1;
     // End of variables declaration//GEN-END:variables
 }

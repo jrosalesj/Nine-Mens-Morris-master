@@ -4,13 +4,14 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 public class Configuracion extends javax.swing.JFrame {
-
+    public int optionGame;
     public Configuracion() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
     
     //Cambiando el icono del programa 
+    @Override
     public Image getIconImage(){
         Image img = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/logoNMM.png"));
         return img;
@@ -53,6 +54,11 @@ public class Configuracion extends javax.swing.JFrame {
         getContentPane().add(jLabelTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
 
         jButtonPlayerPc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/playerVsPc.png"))); // NOI18N
+        jButtonPlayerPc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPlayerPcActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonPlayerPc, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 220, 180));
 
         jButtonPlayerPlayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/playerVsPlayer.png"))); // NOI18N
@@ -87,10 +93,20 @@ public class Configuracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCloseActionPerformed
 
     private void jButtonPlayerPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayerPlayerActionPerformed
+        optionGame=0;
         UsuarioB usuario1 = new UsuarioB();
+        usuario1.setOptionGame(optionGame);
         usuario1.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonPlayerPlayerActionPerformed
+
+    private void jButtonPlayerPcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayerPcActionPerformed
+        optionGame=1;
+        UsuarioB usuario1 = new UsuarioB();
+        usuario1.setOptionGame(optionGame);
+        usuario1.setVisible(true);
+        this.setVisible(false);// TODO add your handling code here:
+    }//GEN-LAST:event_jButtonPlayerPcActionPerformed
 
     public static void main(String args[]) {
         
@@ -111,10 +127,8 @@ public class Configuracion extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Configuracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
       
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Configuracion().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Configuracion().setVisible(true);
         });
     }
 
