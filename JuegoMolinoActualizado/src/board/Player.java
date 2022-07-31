@@ -21,9 +21,9 @@ public class Player {
     private PlayState currState = PlayState.NOTSTARTED;
     private PlayState prevState = PlayState.NOTSTARTED;
     
-    /* Constructor de clase jugador
-     * @param pName: personaje que le pertenece al jugador
-     * @param pMark: personaje de marca de jugador
+    /* Constructor for Player class
+     * @param pName: player name character
+     * @param pMark: player mark character
      */
     public Player(char pName, char pMark, int numMen) {
         name = Character.toString(pName);
@@ -61,7 +61,7 @@ public class Player {
     public boolean hasLost() { return (manCount < 3 || lost ); }
     public void killMan() { manCount--; }
     
-    /* Imprime la informacion del jugador en la consola */
+    /* Print player info to console */
     public void printInfo() {
         System.out.println("Player-" + getName() + "::");
         
@@ -73,9 +73,9 @@ public class Player {
             }
         } else if ( isMoving() ) {
             if ( canMove() ) {
-                System.out.println("Puede moverse [" + manCount + "]");
+                System.out.println("- Moving CanMove [" + manCount + "]");
             } else {
-                System.out.println("Se movera en el proximo turno");
+                System.out.println("- Will MOVE in next turn");
             }
         } else if ( isFlying() && canFly() ) {
             System.out.println("- Flying CanFly [" + manCount + "]");
@@ -89,20 +89,19 @@ public class Player {
     }
 
 
-    /* Borrar las celdas que pertenecen al jugador que se pueden eliminar */
+    /* Clear cells belonging to player than can be removed */
     public void clearRemovableCells() { removableCells = new ArrayList<String>(); killPending = false; }
-    /* Establecer celdas pertenecientes al jugador que se pueden eliminar
- */
+    /* Set Cells belonging to player than can be removed */
     public void setRemovableCells(String cellsToRemove) {
         killPending = true;
         removableCells = new ArrayList<String>(Arrays.asList(cellsToRemove.split(", ")));
         System.out.println("Setting removable cells = \"" + cellsToRemove + "\"");
     }
-    /*Get cells belonging to player than can be removed  */
+    /* Get cells belonging to player than can be removed */
     public ArrayList<String> getRemovableCells() { return removableCells; }
     
     
-    /* M�todos de propiedad de la celda*/
+    /* Cell ownership methods */
     public void addOwnedCell(String cellAddress) { ownedCells.add(cellAddress); }
     public void removeOwnedCell(String cellAddress) {
         ownedCells.remove(cellAddress);
@@ -116,24 +115,23 @@ public class Player {
     public void setNonMillCells(ArrayList<String> cells) { nonMillCells = cells; }
     
 
-    /* Metodo de estados para controlar el estado del juego */
+    /* Finite State Machine for driving player game state */
     public void setPlayState(PlayState state) {
         PlayState nextState = state;
         
         if ( (state == PlayState.NOTSTARTED) || (placeCount == MEN) ) {
-            // START -- juego reciente inicializado o aun por colocar
+            // START -- game just initialized or yet to place
             nextState = PlayState.PLACING;
             
         } else if (state == PlayState.PLACING) {
             if (opponent.killPending) {
-                // formo un molino ,elimine al oponente.
+                // Formed a MILL, remove opponent's man
                 nextState = PlayState.REMOVING;
             } else if ( canPlace() ) {
-                // Aun quedan hombres por colocar
+                // Still have men left to place
                 nextState = PlayState.PLACING;
             } else {
-                // 
-            	//COLOCACI�N completada, avanzar a MOVIMIENTO
+                // PLACING completed, advance to MOVING
                 nextState = PlayState.MOVING;
             }
             
@@ -141,19 +139,18 @@ public class Player {
             if (hasLost()) {
             	nextState = PlayState.GAMEOVER;
             } else if (opponent.killPending) {
-                // 
-            	//Form� un MOLINO, elimine al hombre del oponente
+                // Formed a MILL, remove opponent's man
                 nextState = PlayState.REMOVING;
             } else if ( canFly() ) {
-                // capaz de volar
+                // Able to FLY
                 nextState = PlayState.FLYING;
             } else {
-                // permanecer en estado mover
+                // Remain in MOVE state
                 nextState = PlayState.MOVING;
             }
         } else if (state == PlayState.REMOVING) {
             if ( opponent.hasLost() ) {
-                // comprueba que el juego aun no ha terminado
+                // Check that game is not yet over
                 nextState = PlayState.GAMEOVER;
             } else {
                 if (prevState == PlayState.PLACING && !canPlace()) {
@@ -166,18 +163,18 @@ public class Player {
             }
         } else if (state == PlayState.FLYING) {
             if (opponent.killPending) {
-                // formo un molino,elimine al oponente
+                // Formed a MILL, remove opponent's man
                 nextState = PlayState.REMOVING;
             } else if (hasLost()){
             	nextState = PlayState.GAMEOVER;
             } else {
-                // Permanecer en estado MOVER
+                // Remain in MOVE state
                 nextState = PlayState.FLYING;
             }
         }
         
-        prevState = state;          // guardar estado anterior
-        currState = nextState;      // Guardar siguiente estado
+        prevState = state;          // Save previous state
+        currState = nextState;      // Save next state
     }
     public void setNextPlayState() { setPlayState(currState); }
     public PlayState getCurrentPlayState() { return currState; }

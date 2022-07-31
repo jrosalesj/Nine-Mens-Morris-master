@@ -14,8 +14,8 @@ public class Engine {
     String placeCells = "";
     String newMillCells = "";
     
-    /* constructor para el juego
-     * Crear un nuevo tablero de juego y jugadores asociados
+    /* Constructor class for game engine
+     * Create a new game board and associated players
      */
     public Engine() {
         cBoard = new Board();
@@ -29,7 +29,7 @@ public class Engine {
         setNextPlayer();
     }
     
-    /*Imprimir informaci�n actual del juego */
+    /* Print current game information */
     public void printGameInfo(String str) {
         System.out.println("== " + str);
         cBoard.printBoard();
@@ -40,9 +40,9 @@ public class Engine {
         System.out.println("Board.getVacantCells():: " + cBoard.getVacantCells());
     }
     
-    /* Alternar jugador en cada turno, de modo que:
-     *  p2 obtiene su turno despu�s de p1, y
-     *  p1 obtiene su turno despu�s de p2
+    /* Toggle player at each turn, such that:
+     *   p2 gets turn after p1, and
+     *   p1 gets turn after p2
      */
     public void setNextPlayer() {
         activePlayer = (activePlayer == null) ? p1 : activePlayer.opponent;
@@ -52,10 +52,10 @@ public class Engine {
         System.out.println("\n>> Player-" + activePlayer.getName() + " is next\n\n");
     }
     
-    /* Coloque un Man/Mark para activePlayer en la direcci�n de la celda de destino;
-     * Coloque un Man/Mark para activePlayer en la direcci�n de la celda de destino;
-     *  configurar el tablero para removeMode () si se form� Mill
-     * @param cellAddress: placa celda destino direcci�n lugar Man/Mark
+    /* Place a Man/Mark for activePlayer at destination cell address;
+     * - toggle turn if place was successful but does not result in a Mill
+     * - set board to removeMode() if Mill was formed
+     * @param cellAddress: board cell destination address place Man/Mark
      */
     public void place(String cellAddress) {
         String msg = String.format("Player-%s @ %s", activePlayer.getName(), cellAddress);
@@ -67,16 +67,14 @@ public class Engine {
             cBoard.setOwnedCellsGroup(activePlayer);
             
             if ( result.equals("SUCCESS") ) {
-            	// COLOCAR fue exitoso pero no result� en un Molino para activePlayer
+                // PLACING was successful but did not result in a Mill for activePlayer
                 printGameInfo("PLACE:: " + msg + "; " + result);
                 activePlayer.setNextPlayState();
                 setNextPlayer();
-                
             } else if ( result.contains("-") || result.contains("|")) {
-                // COLOCAR fue exitoso y result� en un Molino para activePlayer
-                //      <>-<>-<> ->Se form� Row Mill
-                //      <>|<>|<> ->Se form� el Molino de Columnas
-                
+                // PLACING was successful and resulted in a Mill for activePlayer
+                //      <>-<>-<> -> Row Mill was formed
+                //      <>|<>|<> -> Column Mill was formed
                 removableCells = inActivePlayer.getNonMillCells();
                 if (removableCells.length() == 0) { removableCells = inActivePlayer.getMillCells(); }
                 if (removableCells.length() > 0) {
@@ -87,7 +85,6 @@ public class Engine {
                     printGameInfo("PLACE:: " + msg + "; SUCCESS!");
                 }
                 activePlayer.setNextPlayState();
-                
             } else {
                 // Failed placeMark
                 System.out.println("PLACE:: " + msg + "; " + result);
@@ -103,13 +100,12 @@ public class Engine {
     
     /* Remove a cell's occupant from Board */
     public void remove(String dstCellAddr) {
-        String msg = String.format("Player-%s removed Player-%s cell %s", activePlayer.getName(), 
-                        inActivePlayer.getName(), dstCellAddr);
+        String msg = String.format("Player-%s removed Player-%s cell %s", activePlayer.getName(), inActivePlayer.getName(), dstCellAddr);
         ArrayList<String> removableCells = activePlayer.opponent.getRemovableCells();
         if (removableCells.contains(dstCellAddr)) {
             cBoard.removeMark(activePlayer.opponent, dstCellAddr);
             activePlayer.opponent.clearRemovableCells();
-            
+            //cBoard.setOwnedCellsGroup(activePlayer);
             
             printGameInfo("REMOVE:: " + msg);
             activePlayer.setNextPlayState();
@@ -125,21 +121,17 @@ public class Engine {
     
     public Board getBoard(){ return cBoard; }
 
-
     public boolean gameOver() { return (p1.hasLost() || p2.hasLost()); }
     
     public boolean inRemoveMode() { return !gameOver() && (cellsToRemove.length() != 0); }
     public boolean inPlaceMode() { return (activePlayer.isPlacing() || inActivePlayer.isPlacing()); }
     public boolean inMoveMode() { return (activePlayer.isMoving() || inActivePlayer.isMoving()); }
     
-
-
     /*
-     * For the player with active girar, mover un hombre de una celda de origen
-     *a la celda de destino en el tablero Morris de 9 hombres
-     * @param 
-srcCell: direcci�n de la celda de origen
-     * @param dstCell: direccion de la celda destino
+     * For the player with active turn, move a Man from a source-cell
+     * to destination cell on the 9-Men's Morris board
+     * @param srcCell: source cell address
+     * @param dstCell: destination cell address
      */
     public void move(String srcCellAddr, String dstCellAddr) {
         String msg = String.format("Player-%s @ %s -> %s", activePlayer.getName(), srcCellAddr, dstCellAddr);;
@@ -162,27 +154,22 @@ srcCell: direcci�n de la celda de origen
                 cBoard.setOwnedCellsGroup(activePlayer);
                 
                 if ( result.equals("SUCCESS") ) {
-
-                //COLOCACI�N fue exitosa pero no result� en un Molino para activePlaye
+                    // PLACING was successful but did not result in a Mill for activePlayer
                     printGameInfo("MOVE:: " + msg + "; " + result);
                     activePlayer.setNextPlayState();
                     setNextPlayer();
-                    
                 } else if ( result.contains("-") || result.contains("|")) {
-                	// COLOCAR fue exitoso y result� en un Molino para activePlayer
-                    //      <>-<>-<> -> Se form� Row Mill
+                    // PLACING was successful and resulted in a Mill for activePlayer
+                    //      <>-<>-<> -> Row Mill was formed
                     //      <>|<>|<> -> Column Mill was formed
                     removableCells = inActivePlayer.getNonMillCells();
                     if (removableCells.length() == 0) { removableCells = inActivePlayer.getMillCells(); }
                     if (removableCells.length() > 0) {
-                        System.out.println(">> Select Player-" + inActivePlayer.getName() + 
-                                " Man/Mark to remove: \"" + removableCells + "\"");
+                        System.out.println(">> Select Player-" + inActivePlayer.getName() + " Man/Mark to remove: \"" + removableCells + "\"");
                         activePlayer.opponent.setRemovableCells(removableCells);
-                        
                         printGameInfo("MOVE:: " + msg + "; SUCCESS!");
                     }
                     activePlayer.setNextPlayState();
-                    
                 } else {
                     // Failed moveMark
                     System.out.println("PLACE:: " + msg + "; " + result);
@@ -191,11 +178,6 @@ srcCell: direcci�n de la celda de origen
         } else { System.out.println("Board not in MOVE state ->> MOVE " + msg + " FAILED!");
         }
     }
-    
-
-    
-   
+    /* Set string value to newMillCells */
     public void setNewMillCells(String commaSeparatedString) { newMillCells = commaSeparatedString; }
-    
-
 }

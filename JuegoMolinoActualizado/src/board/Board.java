@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-    private int DIMENSION = 7;
-    private Cell [][] board;
-
- // enumeraci�n p�blica PlaceOrMoveStates { NO INICIALIZADO, FALLIDO, �XITO, FORMEDMILL }
-     //placeOrMoveStates privado boardStatus = PlaceOrMoveStates.UNINITIALIZED;
+    private final int DIMENSION = 7;
+    private final Cell [][] board;
+    //public enum PlaceOrMoveStates { UNINITIALIZED, FAILED, SUCCESS, FORMEDMILL }
+    //private PlaceOrMoveStates boardStatus = PlaceOrMoveStates.UNINITIALIZED;
     
-    /* Se imprime las vareiables desde la consola */
+    /* Console print variables */
     boolean colIsNumeric = false;
     boolean rowIsNumeric = !colIsNumeric;
     private boolean ROWADDRFIRST = false;
@@ -19,10 +18,9 @@ public class Board {
     
     private ArrayList<String> vacantCells = null;
     
-    
     /*
-     * Inicializacion del tablero,inicializa la celda X-by-Y
-     * Luego se configura los enlaces de celdad basados en la matriz de adyacencia adjunto
+     * Board constructor: initialize board X-by-X grid of Cells and
+     * then setup Cell links based on adjacency/neighbor matrix
      */
     public Board() {
         board = new Cell[DIMENSION][DIMENSION];
@@ -31,9 +29,9 @@ public class Board {
     }
     
     /*
-     *Se configura los cadilleros adjuntos :izquierdo ,derecho ,superior e inferior de cada celda 
-     en un taablero de juego de Nine_Men-Morris - se observa la matriz de aduyacencia para las celdas.
-    */
+     * Setup left, right, top and bottom neighbors of each cell on
+     * a 9-Men's-Morris game board (adjacency matrix for all 24-cells)
+     */
     private void setNeighbors() {
         String[] cellMap = "a1,d1,g1,b2,d2,f2,c3,d3,e3,a4,b4,c4,e4,f4,g4,c5,d5,e5,b6,d6,f6,a7,d7,g7".split(",");
         int [][][] adjacency =  {
@@ -67,23 +65,23 @@ public class Board {
         Cell currCell = null;
         for (int index = 0; index < adjacency.length; index++) {
             currCell = createCell(adjacency[index][0][0], adjacency[index][0][1]);
-            currCell.label = cellMap[index];    //  la cadena
+            currCell.label = cellMap[index];    // string label
             
             currCell.left = createCell(adjacency[index][1][0], adjacency[index][1][1]);
             currCell.right = createCell(adjacency[index][2][0], adjacency[index][2][1]);
             currCell.top = createCell(adjacency[index][3][0], adjacency[index][3][1]);
             currCell.bottom = createCell(adjacency[index][4][0], adjacency[index][4][1]);
             
-            vacantCells.add(cellMap[index]);    // Actualiza celdas vacantes
+            vacantCells.add(cellMap[index]);    // Update vacant cells
         }
     }
     
     /*
-     * Al ingresar una direccion de una celda con tipo A1,A2,D4,E5,rtc,determina
-     * la posicion de fila y columna del tablero de la direccion de la celda
-     * @param cellAddress: direccion de celda de cadena de 2 caracteres
-     * @param rowOrCol: cadenas : fila o columna
-     * @return integer: tablero matriz de celda  fila/columna
+     * Given a cell address of type A1, A2, D4, E5, etc, determine and 
+     * return the cell address's board row/col position
+     * @param cellAddress: 2-character string cell address
+     * @param rowOrCol: "row" or "col" strings
+     * @return integer: board Cell array row/col
      */
     private int getIntIndex(String cellAddress, String rowOrCol) {
         int addrIndex = -1;
@@ -101,29 +99,28 @@ public class Board {
     }
     
     /*
-     *Dada una direccion de celda de tipo A1,A2,D4,E5,etc
-     *determina y devuelve la posicion fila del tablero de la direccion de celda.en el segundo caracter
-     * @param cellAddress: direccion de la celda
-     * @return integer: tablero matriz de celdas fila
+     * Given a cell address of type A1, A2, D4, E5, etc, determine and 
+     * return the cell address's board row position (2nd character)
+     * @param cellAddress: cell address
+     * @return integer: board Cell array row
      */
     private int getRow(String cellAddress) { return getIntIndex(cellAddress, "row"); }
     
     /*
-     * 
-          Dada una direcci�n de celda de tipo A1, A2, D4, E5, etc., determine y
-     * devolver la posici�n de la columna del tablero de la direcci�n de la celda (1er car�cter)
-
-     * @param cellAddress: direccion de la celda
-     * @return integer: tablero matriz de celda columna
+     * Given a cell address of type A1, A2, D4, E5, etc, determine and 
+     * return the cell address's board column position (1st character)
+     * @param cellAddress: cell address
+     * @return integer: board Cell array column
      */
     private int getCol(String cellAddress) { return getIntIndex(cellAddress, "col"); }
     
-    /* Adjust an row-/col-index para una indexaci�n base-0 adecuada en la matriz del tablero */
+    /* Adjust an row-/col-index for proper base-0 indexing into board array */
     private int adjustIndex(int index) { return index - 1; }
     
-    /*Crear una celda en la fila y columna del tablero
-     * @param boardRow:tipo entero en la fila row# (base-1)
-     * @param boardCol: tipo columna en la columna (base-1)
+    /*
+     * Create a cell at board's row and column 
+     * @param boardRow: integer type row# (base-1)
+     * @param boardCol: integer type column# (base-1)
      */
     private Cell createCell(int boardRow, int boardCol) {
         Cell cell = null;
@@ -138,17 +135,17 @@ public class Board {
         return cell;
     }
     
-    /* comprobar si las coordenadas de fila y columna son validas */
+    /* Check if row and column coordinates are valid */
     private boolean isValidCellAddr(int boardRow, int boardCol) {
         return (boardRow > 0) && (boardCol > 0);
     }
 
-    /* Imprime los encabezados de la columna del tablero */
+    /* Print game board column header */
     public void printColumnHeader(int spacer) {
         String str = " ";
         int chOffset = colIsNumeric ? DIMENSION : 0;
         
-        // Imprime encabezados de columna
+        // print column headers
         for (int i = 0; i < DIMENSION; i++) {
             str += String.format("%s%s", repeatChar(' ', spacer), 
                         Character.toString(LABELS.charAt(i + chOffset)));
@@ -156,17 +153,16 @@ public class Board {
         System.out.println(str);
     }
     
-    /*Impresi�n de placa basada en consola para depuraci�n sin interfaz gr�fica de usuario */
+    /* Console-based board printing for non-gui debug */
     public void printBoard() {
         int numSpacer = 1;
         int rowChOffset = rowIsNumeric ? DIMENSION : 0;
         printColumnHeader(numSpacer);
         
         String str = "";
-        //Imprime envabezados de las columnas
+        // print column headers
         for (int i = 0; i < DIMENSION; i++) {
-            str += String.format("%s%s", Character.toString(LABELS.charAt(i + rowChOffset)), 
-                        repeatChar(' ', numSpacer));
+            str += String.format("%s%s", Character.toString(LABELS.charAt(i + rowChOffset)), repeatChar(' ', numSpacer));
             
             for (int j = 0; j < DIMENSION; j++) {
                 if (board[i][j] != null) { str += String.format("%s", board[i][j].getStateChar());
@@ -182,11 +178,11 @@ public class Board {
     }
     
     /*
-     * Dada una direcci�n de fila y columna basada en 1, obtenga la celda del tablero
-     * referenciado por los par�metros de fila y columna
-     * @param boardRow: fila tipo fila row# (base-1)
-     * @param boardCol: columna tipo entero column# (base-1)
-     * @return: referencia de una celda del tablero
+     * Given a 1-based row and column address, get the board cell
+     * referenced by the row and column parameters
+     * @param boardRow: integer type row# (base-1)
+     * @param boardCol: integer type column# (base-1)
+     * @return: referenced board cell 
      */
     public Cell getCell(int boardRow, int boardCol) {
         Cell cell = null;
@@ -199,17 +195,16 @@ public class Board {
     
     public Cell getCell(String cellAddr) { return getCell(getRow(cellAddr), getCol(cellAddr));}
     
-    /* �til para la impresi�n en consola de un personaje un cierto n�mero de veces */
+    /* Useful for console printing of a character a certain number of times */
     private static final String repeatChar(char c, int length) {
         char[] data = new char[length];
         Arrays.fill(data, c);
         return new String(data);
     }
     
-
     /*
-     *Busque en las celdas la direcci�n izquierda/derecha/arriba/abajo y devuelva el
-     * celda de borde en la direcci�n de b�squeda
+     * Search cells left/right/top/bottom direction and return the
+     * edge cell in the search direction
      */
     private Cell getEdgeCell(Cell cell, String direction) {
         Cell edgeCell = cell;
@@ -227,8 +222,8 @@ public class Board {
         
         return edgeCell;
     }
-
-    /*Borra la celda deFrom edge cell to right/bottom, clear Mill status */
+    
+    /* From edge cell to right/bottom, clear Mill status */
     private void clearFromMill(Cell edgeCell, String direction) {
         Cell cell = edgeCell;
         
@@ -245,16 +240,12 @@ public class Board {
         }
     }
 
-
-
-
-
     /*
-     * mover la marca de un jugador de una celda a otra
-     * @param player: jugador de clase jugador
-     * @param srcCellAddr: coordenada de la celda de origen, e.g. A1, C3, F4, etc.
-     * @param dstCellAddr: coordenada de la celda de destino, e.g. A1, C3, F4, etc.
-     * @return booleano de verdad o falso para movimiento exitoso o fallido
+     * Move a player's mark from one cell to another
+     * @param player: player of class Player
+     * @param srcCellAddr: source cell coordinate, e.g. A1, C3, F4, etc.
+     * @param dstCellAddr: destination cell coordinate, e.g. A1, C3, F4, etc.
+     * @return boolean true/false for successful/failed move
      */
     public String moveMark(Player p, String srcAddress, String dstAddress) {
         Cell dstCell = getCell(getRow(dstAddress), getCol(dstAddress));
@@ -263,13 +254,13 @@ public class Board {
         
         if ((srcCell != null) && (dstCell != null)) {
             if (p.isOwner(srcCell) && !dstCell.isOccupied()) {
-                clearMillFormation(srcCell);    // 
+                clearMillFormation(srcCell);    // Clear Mill formation for source
                 vacateCell(srcCell);
                 
-                occupyCell(dstCell, p);         //Actualiza lista de celdas vacantes
-                clearMillFormation(dstCell);    // Limpia la formacion del molino para el destino
+                occupyCell(dstCell, p);         // Update vacant cell list
+                clearMillFormation(dstCell);    // Clear Mill formation for destination
                 
-                status = millStatusCheck(dstCell, p);       // vefificando el estado de formacion del molino
+                status = millStatusCheck(dstCell, p);       // Check Mill formation status
                 
             } else if (!p.isOwner(srcCell)) {
                 System.out.println("Wrong owner for cell " + srcAddress + "!");
@@ -286,12 +277,12 @@ public class Board {
         return status;
     }
     
-    /* elimina una celda se�alada que pertenece al jugador */
+    /* Remove referenced cell belonging to player */
     public boolean removeMark(Player p, String cellAddr) {
         Cell c = getCell(getRow(cellAddr), getCol(cellAddr));
         
         if (c.isOccupied() && p.isOwner(c)) {
-            clearMillFormation(c);     //Limpia las formaciones de molinos
+            clearMillFormation(c);     // Clear mill formations
             //c.setEmpty();
             vacateCell(c);
             p.killMan();           
@@ -301,29 +292,29 @@ public class Board {
         return false;
     }
     
-    /* Limpia restos de la formacio de molino para una celda dada */
+    /* Clear mill formation details for a given cell */
     private void clearMillFormation(Cell c) {
         Cell edgeCell = null;
         String millCells = "";
         
-        //chequea si se formo molino en una fila
+        // Check for Row-Mill
         if (millCells.length() == 0) {
-            // marca de izquierda a derecha si se form� molino en la fila
+            // Check left-to-right if MILL formed on row
             edgeCell = getEdgeCell(c, "left");
             millCells = checkMillFormation(edgeCell, c.owner, "right");
             if (millCells.length() > 0) { clearFromMill(edgeCell, "right"); }
         }
         
-        //comprobar si no se formo molino en la columna,al no detectarse en la fila
+        // Check for Column-Mill if Row-Mill is not detected
         if (millCells.length() == 0) {
-            //Verifica de arriba a abajo si se formo molino en la columna
+            // Check top-to-bottom if MILL formed in column
             edgeCell = getEdgeCell(c, "top");
             millCells = checkMillFormation(edgeCell, c.owner, "bottom");
             if (millCells.length() > 0) { clearFromMill(edgeCell, "bottom"); }
         }
     }
 
-    /*averigua si un jugador P consigue todas las fichas que pertenecen al oponente de p */
+    /* Given a player p, get all cells belonging p's opponent */
     public String getOpponentCells(Player p) {
         String cellLabels = "";
         Cell c;
@@ -333,14 +324,14 @@ public class Board {
                 c = board[i][j];
                 
                 if ((c == null) || c.isEmpty()) {
-                    // omitir todas las iteraciones de celdas no validas
+                    // Skip all invalid cell iterations
                     continue;
                 } else if (!p.isOwner(c) && !c.isInMill()) {
-                    // aun no vuela
+                    // Not yet flying
                     // a1,b1,c3,etc
                     cellLabels = (cellLabels.length() == 0) ? c.label : cellLabels + "," + c.label;
                 } else {
-                    // volador
+                    // Flying
                     //System.out.println("Player-" + p.getName() + " is flying!");
                 }
             }
@@ -380,20 +371,19 @@ public class Board {
     }
     
     /*
-     * Obtenga todas las celdas vac�as / vacantes a bordo
-   
-     * - se puede usar para determinar posibles ubicaciones cuando un jugador puede volar
+     * Get all empty/vacant cells on Board
+     * - can be used in determining possible Place locations
+     * - can be used in determining possible Move locations when a player can fly
      */
     public String getVacantCells() { return String.join(", ", vacantCells); }
 
-    /* Eliminar una celda con direcci�n de la lista de celdas vacantes */
+    /* Remove an addressed cell from vacant Cells list */
     public void occupyCell(Cell c, Player p) { c.setOccupied(p); vacantCells.remove(c.label); }
-    /* vuelva a agregar una celda con direccion a la lista de celda vacante*/
+    /* Add back an addressed cell to vacant Cells list */
     public void vacateCell(Cell c) { c.setEmpty(); vacantCells.add(c.label); }
     
     
-    
-    /* consigue todas las celdas que pertenecen a la jugadora. p */
+    /* Get all cells belonging to player p */
     public String getOwnedCells(Player p, boolean doPrint) {
         String cellLabels = "";
         Cell c;
@@ -408,7 +398,7 @@ public class Board {
         return cellLabels;
     }
 
-    /* obtenga ce */
+    /* Get non-Mill-formed cells belonging to Player */
     public String getNonMillOwnedCells(Player p, boolean doPrint) {
         String[] cellAddrs = getOwnedCells(p, false).split(",");
         String cellLabels = "";
@@ -432,7 +422,7 @@ public class Board {
         return cellLabels;
     }
     
-    /*obtener celdas por molinos alcanzados por el jugador */
+    /* Get Mill-formed cells belonging to Player */
     public String getMillOwnedCells(Player p, boolean doPrint) {
         String[] ownedCellAddrs = getOwnedCells(p, false).split(",");
         String nonMillCellAddrs = getNonMillOwnedCells(p, false);
@@ -453,21 +443,22 @@ public class Board {
     }
     
     
-  
-    
+    /*************************************************************************************/
+    // REFACTORED METHODS
+    /*************************************************************************************/
     private String millStatusCheck(Cell c, Player p) {
         String status = "";
         
-        // comprobar si la accion mas reciente formo un Molino
+        // Check if most recent action formed a Mill
         status = getMillCells(c, p);
         // Non-empty delimited string == cells that formed mill;
         if (status.length() == 0){ status = "SUCCESS"; }
         
         return status;
     }
-    /* Establezca una direccion de celda dada como perteneciente a un jugador
-     * @param player:Jugadora de clase
-     * @param dstCellAddr: coordenada de celda, e.g. A1, C3, F4, etc.
+    /* Set a given cell address as belonging to a player
+     * @param player: player of class Player
+     * @param dstCellAddr: cell coordinate, e.g. A1, C3, F4, etc.
      * @return None
      */
     public String placeMark(Player p, String cellAddr) {
@@ -475,8 +466,8 @@ public class Board {
         String status = "FAILED";
         
         if ( (c != null) && !c.isOccupied() ) {
-            occupyCell(c, p);       // actualizar la lista de celdas vancantes
-            p.doPlace();            // Actualizar recuento de lugares
+            occupyCell(c, p);       // Update vacant cell list
+            p.doPlace();            // Update Place count
             status = millStatusCheck(c, p);     // Check Mill formation status
             
         } else if (c == null) { System.out.println("Cell " + cellAddr + " is invalid!");
@@ -487,7 +478,7 @@ public class Board {
         return status;
     }
     
-    /* Comprobar si una celda es parte de un molino :return cadena de celdas pertenecientes a molino */
+    /* Check if a cell is part of a mill; return String of cells belonging to Mill */
     private String checkMillFormation(Cell edgeCell, Player p, String direction) {
         Cell cell = edgeCell;
         ArrayList<String> millCells = new ArrayList<String>();
@@ -496,17 +487,17 @@ public class Board {
             millCells.add(cell.label);
             
             if (direction.equals("right")) {
-                //Busqueda de izquierda a derecha
+                // Left-to-right search
                 cell = cell.right;
             } else if (direction.equals("bottom")) {
-                // busqueda de arriba a abajo
+                // Top-to-bottom search
                 cell = cell.bottom;
             }
         }
 
         String millCellsString = "";
         if (millCells.size() < 3) {
-            // No formo un molino ;borrar el estado del molino de las celdad contiguas
+            // Didn't form a mill; clear mill status of adjoining cells 
             clearFromMill(edgeCell, direction);
             millCells = new ArrayList<String>();
         } else if (millCells.size() == 3) {
@@ -523,31 +514,30 @@ public class Board {
         return millCellsString;
     }
     
-    /*Compruebe si 3 celdas de tablero en la misma fila forman un molino, de lo contrario
-     * Compruebe si 3 celdas de tablero en la misma columna forman un molino
-     * @param cell: celda colocada m�s recientemente
+    /* Check if 3 board cells on the same row form a mill, else
+     * Check if 3 board cells in the same column form a mill
+     * @param cell: most recently placed cell 
      */
     private String getMillCells(Cell cell, Player p) {
         Cell edgeCell = null;
         String millCells = "";
         
-        // compruebe si hay molino en una fila
+        // Check for Row-Mill
         edgeCell = getEdgeCell(cell, "left");
-        // Marque de izquierda a derecha si se form� MILL en la fila
+        // Check left-to-right if MILL formed on row
         millCells = checkMillFormation(edgeCell, p, "right");
         if (millCells.length() > 0) {
             //System.out.println("Row mill check result = \"" + millCells + "\"");
             return millCells;
         }
         
-        // chequeando molino fia
+        // Check for Column-Mill
         edgeCell = getEdgeCell(cell, "top");
-        //
-       // Verifique de arriba a abajo si se form� MILL en la columna
+        // Check top-to-bottom if MILL formed in column
         millCells = checkMillFormation(edgeCell, p, "bottom");
             
         if (millCells.length() > 0) {
-            //System.out.println("chequeando el resultado de molino en fila = \"" + millCells + "\"");
+            //System.out.println("Column mill check result = \"" + millCells + "\"");
             return millCells;
         }
         
@@ -560,11 +550,11 @@ public class Board {
         
         while (cell != null) {
             if (direction.equals("right")) {
-                //ir de izquierda a derecha
+                // Go left-to-right
                 cell.setRowMill();
                 cell = cell.right;
             } else if (direction.equals("bottom")) {
-                //ir de arriba abajo
+                // Go top-to-bottom
                 cell.setColumnMill();
                 cell = cell.bottom;
             }

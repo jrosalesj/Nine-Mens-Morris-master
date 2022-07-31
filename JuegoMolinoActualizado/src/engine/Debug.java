@@ -13,7 +13,6 @@ public class Debug {
         interractive();
     }
     
-    
     public static void fillAll() {
         String [] plays = "a1,d1,g1,b2,d2,f2,c3,d3,e3,a4,b4,c4,e4,f4,g4,c5,d5,e5,b6,d6,f6,a7,d7,g7".split(",");
         for (int i = 0; i < plays.length; i++) {
@@ -23,14 +22,7 @@ public class Debug {
     
     public static void interractive() {
         fillAll();
-        
-        /*
-        String[] plays = "a1,b2,a4,d2".split(",");
-        for (int i = 0; i < plays.length; i++) {
-            game.place(plays[i]);
-        }
-        */
-        
+      
         while (game.activePlayer.isPlacing() || game.inActivePlayer.isPlacing()) {
             place();
             if (game.activePlayer.removePending()) { remove(); }

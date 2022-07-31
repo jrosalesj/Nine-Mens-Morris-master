@@ -14,10 +14,9 @@ public class Cell {
     public Cell bottom = null;
     
     /* Constructor */
-    //cell----celda
     public Cell() { setEmpty(); }
     
-    /* Se utiliza en la impresión a la consola */
+    /* Used in printing to console */
     public String getStateChar() {
         String stateStr;
         
@@ -35,24 +34,22 @@ public class Cell {
     public void setColumnMill() { columnMill = true; }
     public boolean isInMill() { return (rowMill || columnMill); }
     
-    /*Verifica si la celda no está ocupada por ninguna jugadora */
+    /* Check if cell is not occupied by any player */
     public boolean isEmpty() { return (owner == null); }
-    /* borrar la propiedad de una celda */
+    /* Clear ownership of a cell */
     public void setEmpty() { if (!isEmpty()) { owner.removeOwnedCell(label); owner = null; } }
     
-    /*Comprobar si la celda está ocupada por algún jugador */
+    /* Check if cell is occupied by any player */
     public boolean isOccupied() { return (!isEmpty()); }
-    /* establecer la celda como ocupada por el jugador */
+    /* Set cell as occupied by Player */
     public void setOccupied(Player p) { if (isEmpty()) { p.setOwner(this); owner = p; } }
     
 
     public boolean matchOwner(Player p) {
-        return ((p != null) && (owner != null) && 
-                (owner.getName().equals(p.getName()))
-                );
+        return ((p != null) && (owner != null) && (owner.getName().equals(p.getName())));
     }
     
-    /* Compruebe si Cell tiene algún vecino abierto (incluidos los vecinos del molino) */
+    /* Check if Cell has any open neighbor (including mill neighbors) */
     public boolean hasOpenNeighbor() {
         boolean status = false;
         
@@ -64,7 +61,7 @@ public class Cell {
         return status;
     }
     
-    /* compruebe si la celda tiene una celda vacia que no es de molino */
+    /* Check if Cell has an open non-mill neighbor */
     public boolean hasOpenNonMillNeighbor() {
         boolean status = false;
         

@@ -119,7 +119,7 @@ public class UsuarioB extends javax.swing.JFrame {
            
             JFrame usuario3 = new MainGUI();
             usuario3.setVisible(true);
-            usuario3.setSize(800,700);
+            usuario3.setSize(850,700);
             usuario3.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             usuario3.setLocationRelativeTo(null);
             usuario3.setResizable(false);

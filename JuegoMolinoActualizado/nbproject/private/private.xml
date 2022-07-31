@@ -3,16 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/test/engine/EngineTest.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/engine/EngineAI.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/test/board/BoardTest.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/engine/Engine.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/gui/MainGUI.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/ventana/UsuarioN.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/board/Board.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/ventana/Configuracion.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/ventana/UsuarioB.java</file>
-            <file>file:/C:/Users/sinai/OneDrive/Documents/NetBeansProjects/Molinero/src/gui/BoardGUI.java</file>
+            <file>file:/C:/2022/Desarrollo%20de%20Software/Molinero_Sprint3/Molinero/src/ventana/Configuracion.java</file>
+            <file>file:/C:/2022/Desarrollo%20de%20Software/Molinero_Sprint3/Molinero/src/gui/BoardGUI.java</file>
+            <file>file:/C:/2022/Desarrollo%20de%20Software/Molinero_Sprint3/Molinero/src/ventana/UsuarioB.java</file>
+            <file>file:/C:/2022/Desarrollo%20de%20Software/Molinero_Sprint3/Molinero/src/ventana/UsuarioN.java</file>
+            <file>file:/C:/2022/Desarrollo%20de%20Software/Molinero_Sprint3/Molinero/src/gui/MainGUI.java</file>
         </group>
     </open-files>
 </project-private>
